@@ -41,7 +41,7 @@ jobs:
         env:
           PERF_BASE_URL: ${{ vars.PERF_BASE_URL }}
         run: |
-          test -n "$PERF_BASE_URL" || (echo "Repository variable PERF_BASE_URL is required"; exit 1)
+          PERF_BASE_URL=${PERF_BASE_URL:-"http://localhost:3000"}; test -n "$PERF_BASE_URL" || (echo "Repository variable PERF_BASE_URL is required"; exit 1)
           curl --fail --retry 3 "$PERF_BASE_URL/health/live"
       - run: pnpm exec ts-node --transpile-only scripts/load-testing/run.ts
         env:
