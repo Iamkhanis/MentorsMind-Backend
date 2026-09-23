@@ -8,12 +8,12 @@ import { maskPIIDeep } from "./pii-mask";
 // ---------------------------------------------------------------------------
 interface PinoLogger {
   level: string;
-  info(obj: object | string, msg?: string, ...args: unknown[]): void;
-  debug(obj: object | string, msg?: string, ...args: unknown[]): void;
-  warn(obj: object | string, msg?: string, ...args: unknown[]): void;
-  error(obj: object | string, msg?: string, ...args: unknown[]): void;
-  fatal(obj: object | string, msg?: string, ...args: unknown[]): void;
-  trace(obj: object | string, msg?: string, ...args: unknown[]): void;
+  info(obj: object | string, msg?: any, ...args: unknown[]): void;
+  debug(obj: object | string, msg?: any, ...args: unknown[]): void;
+  warn(obj: object | string, msg?: any, ...args: unknown[]): void;
+  error(obj: object | string, msg?: any, ...args: unknown[]): void;
+  fatal(obj: object | string, msg?: any, ...args: unknown[]): void;
+  trace(obj: object | string, msg?: any, ...args: unknown[]): void;
   child(bindings: Record<string, unknown>): PinoLogger;
 }
 
@@ -75,7 +75,7 @@ export class Logger {
     this.child = logger.child({ context });
   }
 
-  info(obj: object | string, msg?: string): void {
+  info(obj: object | string, msg?: any): void {
     if (typeof obj === "string") {
       this.child.info(obj);
     } else {
@@ -83,7 +83,7 @@ export class Logger {
     }
   }
 
-  debug(obj: object | string, msg?: string): void {
+  debug(obj: object | string, msg?: any): void {
     if (typeof obj === "string") {
       this.child.debug(obj);
     } else {
@@ -91,7 +91,7 @@ export class Logger {
     }
   }
 
-  warn(obj: object | string, msg?: string): void {
+  warn(obj: object | string, msg?: any): void {
     if (typeof obj === "string") {
       this.child.warn(obj);
     } else {
@@ -99,7 +99,7 @@ export class Logger {
     }
   }
 
-  error(obj: object | string, msg?: string): void {
+  error(obj: object | string, msg?: any): void {
     if (typeof obj === "string") {
       this.child.error(obj);
     } else {
