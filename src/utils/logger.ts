@@ -1,3 +1,4 @@
+import pino from "pino";
 import { env } from "../config/env";
 import { maskPIIDeep } from "./pii-mask";
 
@@ -45,12 +46,7 @@ const LOG_LEVEL: string =
   (IS_TEST ? "silent" : IS_PRODUCTION ? "info" : "debug");
 
 function createPinoLogger(): PinoLogger {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const mod: any = (globalThis as any).require?.("pino") ??
-    // fallback: when bundled with ts-node, module is available via eval
-    Function("m", "return require(m)")("pino"); // eslint-disable-line no-new-func
-  const factory = typeof mod === "function" ? mod : mod?.default ?? mod;
-  return factory({
+  return (pino as any)({
     level: LOG_LEVEL,
     redact: { paths: REDACT_PATHS, censor: "[REDACTED]" },
     ...(IS_PRODUCTION
