@@ -209,5 +209,13 @@
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.57.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "toml": "4.2.0",
+      "protobufjs": "8.8.0",
+      "@opentelemetry/propagator-jaeger": "2.11.0",
+      "brace-expansion": "2.1.4"
+    }
   }
 }
