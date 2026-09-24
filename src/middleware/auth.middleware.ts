@@ -2,6 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { env } from "../config/env";
 import { logger } from "../utils/logger.utils";
+import { createError } from "./errorHandler";
+import { ErrorCode } from "../errors/error-codes";
+
 
 const JWT_SECRET = env.JWT_SECRET;
 const LAST_ACTIVE_DEBOUNCE_MS = 60 * 1000; // 1 minute
@@ -64,7 +67,7 @@ export const authenticate = async (
       const current = await JwksService.getCurrentKey();
       if (
         keyPair.kid !== current?.kid &&
-        !JwksService.isPreviousKeyValid(keyPair)
+        !(JwksService as any).isPreviousKeyValid(keyPair)
       ) {
         res.status(401).json({
           success: false,
@@ -155,8 +158,13 @@ export const authenticate = async (
       );
     }
 
+
+    if (!req.user?.id || !req.user?.userId) {
+      throw createError(ErrorCode.AUTH_UNAUTHORIZED, 401, { reason: "req.user is undefined or missing id/userId" });
+    }
+
     next();
-  } catch (error) {
+  } catch (error: any) {
     if (error instanceof jwt.TokenExpiredError) {
       res.status(401).json({
         success: false,
@@ -164,6 +172,9 @@ export const authenticate = async (
         code: "TOKEN_EXPIRED",
       });
       return;
+    }
+    if (error?.code === ErrorCode.AUTH_UNAUTHORIZED) {
+      return next(error);
     }
     res.status(401).json({
       success: false,
@@ -224,6 +235,7 @@ export const requireRole = (roles: string[]) => {
         error: "Access denied. Insufficient permissions.",
       });
     }
+
     next();
   };
 };
