@@ -25,6 +25,7 @@ const REQUIRED_QUEUE_NAMES = [
     'INCIDENT_RESPONSE',
     'ONBOARDING_NUDGE',
     'TAX_REPORTING',
+    'REPUTATION_SYNC',
 ] as const;
 
 for (const queueKey of REQUIRED_QUEUE_NAMES) {
@@ -62,3 +63,4 @@ export { insightGenerationWorker } from './insight-generation.worker';
 export { incidentHandlerWorker } from './incident-handler.worker';
 export { onboardingNudgeWorker } from './onboardingNudge.worker';
 export { taxReportingWorker } from './tax-reporting.worker';
+export { reputationSyncWorker } from './reputation-sync.worker';
