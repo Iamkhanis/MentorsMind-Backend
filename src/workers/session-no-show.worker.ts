@@ -1,3 +1,4 @@
+import { NotificationType, NotificationChannel } from "../services/notification.service";
 import { Worker, Job } from 'bullmq';
 import {
   redisConnection,
