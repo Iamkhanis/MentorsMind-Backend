@@ -242,6 +242,13 @@ export const BookingsService = {
     return booking;
   },
 
+  async listBookings(
+    userId: string,
+    filters?: { status?: string; cursor?: string; page?: number; limit?: number },
+  ): Promise<{ bookings: BookingRecord[]; total: number }> {
+    return this.getUserBookings(userId, filters);
+  },
+
   async getUserBookings(
     userId: string,
     filters?: { status?: string; cursor?: string; page?: number; limit?: number },

@@ -166,13 +166,21 @@ export const authenticate = async (
     next();
   } catch (error: any) {
     if (error instanceof jwt.TokenExpiredError) {
-      res.status(401).json({ success: false, error: "Token expired." });
+      res.status(401).json({
+        success: false,
+        error: "Token expired.",
+        code: "TOKEN_EXPIRED",
+      });
       return;
     }
     if (error?.code === ErrorCode.AUTH_UNAUTHORIZED) {
       return next(error);
     }
-    res.status(401).json({ success: false, error: "Invalid token." });
+    res.status(401).json({
+      success: false,
+      error: "Invalid token.",
+      code: "TOKEN_INVALID",
+    });
   }
 };
 
